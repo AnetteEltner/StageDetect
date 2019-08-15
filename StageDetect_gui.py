@@ -18,7 +18,7 @@ Description:    This program detects water stage using image sequences. It inclu
                 camera orientation, template matching for GCP detection, master retrieval
                 from image sequence, image co-registration, water line detection, and
                 transforming 2D points into 3D coordinates. The program has been written in
-                cooperation with Melanie Kröhnert and Hannes Sardemann.
+                cooperation with Melanie KrÃ¶hnert and Hannes Sardemann.
 URL:            https://github.com/AnetteEltner/StageDetect
 Requires:       Tkinter, scipy, scikit-learn, scikit-image, shapely, statsmodels, seaborn,
                 cv2 (openCV version 2.4.13)
@@ -1362,11 +1362,9 @@ def main():
     
     app = WaterlineTool(root)   
     
-    root.mainloop()
+    root.mainloop()   
     
-    
-    
-    root.destroy() # optional; see description below        
+    #root.destroy() # optional; see description below        
 
 
 

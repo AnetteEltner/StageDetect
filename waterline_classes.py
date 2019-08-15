@@ -1,3 +1,26 @@
+# Copyright (c) 2018, Anette Eltner
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met: 
+# 
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer. 
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution. 
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 # encoding=utf8
 
 import os, sys, csv
@@ -9,20 +32,19 @@ import pandas as pd
 import skimage.morphology
 from skimage.morphology import square
 from skimage.morphology import disk
-from skimage.filter.rank import median
-from skimage.filter.rank import mean_bilateral
+from skimage.filters.rank import median
+from skimage.filters.rank import mean_bilateral
 
 from PIL import Image, ImageDraw
 
 import statsmodels.nonparametric.smoothers_lowess
 from scipy import stats
 
-from shapely.geometry import LineString, Point, Polygon
+from shapely.geometry import LineString, Point#, Polygon
 
 import seaborn as sns
 import sklearn.cluster as cluster
 
-from wx import App, ScreenDC 
 from __builtin__ import True
 
 
@@ -953,6 +975,7 @@ class ImageProcess:
 
     
     '''calculate temporal texture and average image'''
+    # script adapted from Melanie Kroehnert
     def tempTexture(self, image_list, directory_out, border_mask_file=None, bilat_filter_img=False, bilat_filter_tempText=False):
         
         if not os.path.exists(directory_out):
@@ -1095,7 +1118,7 @@ class Histogram:
             plt.clf()
             plt.plot(hist_land)
             plt.title('Histogram land')
-            plt.savefig(os.path.join(directory_output, 'histogram_land.jpg'),  dpi=draw_tools.monitordpi()) 
+            plt.savefig(os.path.join(directory_output, 'histogram_land.jpg'),  dpi=600) 
             plt.close()
         
         
@@ -1107,7 +1130,7 @@ class Histogram:
             plt.clf()
             plt.plot(hist_water)
             plt.title('Histogram water')
-            plt.savefig(os.path.join(directory_output, 'histogram_water.jpg'),  dpi=draw_tools.monitordpi()) 
+            plt.savefig(os.path.join(directory_output, 'histogram_water.jpg'),  dpi=600) 
             plt.close()
             
         corr_hist = cv2.compareHist(hist_land, hist_water, cv2.cv.CV_COMP_CORREL)
@@ -1134,7 +1157,7 @@ class Histogram:
                 plt.clf()
                 plt.plot(hist_water_smooth)
                 plt.title('Histogram smooth water')
-                plt.savefig(os.path.join(directory_output, 'histogram_smooth_water.jpg'),  dpi=draw_tools.monitordpi()) 
+                plt.savefig(os.path.join(directory_output, 'histogram_smooth_water.jpg'),  dpi=600) 
                 plt.close()
                 
         print('Correlation coefficient histogram comparison: ' + str(corr_hist))
@@ -1279,12 +1302,12 @@ class WaterlineEstimation:
                 plt.clf()
                 plt.imshow(tempText_land)
                 plt.title('land side')
-                plt.savefig(os.path.join(directory_output, 'clip_land.jpg'),  dpi=draw_tools.monitordpi()) 
+                plt.savefig(os.path.join(directory_output, 'clip_land.jpg'),  dpi=600) 
                 plt.close()
                 plt.clf()
                 plt.imshow(tempText_water)
                 plt.title('water side')
-                plt.savefig(os.path.join(directory_output, 'clip_water.jpg'),  dpi=draw_tools.monitordpi()) 
+                plt.savefig(os.path.join(directory_output, 'clip_water.jpg'),  dpi=600) 
                 plt.close()    
             
             
@@ -1334,7 +1357,7 @@ class WaterlineEstimation:
                     plt.clf()
                     plt.imshow(tempText_clip_f_16bit)
                     plt.title('filtered temporal texture 16bit')
-                    plt.savefig(os.path.join(directory_output, 'clip_tempText.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plt.savefig(os.path.join(directory_output, 'clip_tempText.jpg'),  dpi=600) 
                     plt.close()
             
                 ''''find seed points'''
@@ -1355,7 +1378,7 @@ class WaterlineEstimation:
                     if plot_results:
                         draw_tools.plot_pts(tempText_clip_f_16bit, seed_points, True, 'Seed points', True)
                         plt.title('seed points')
-                        plt.savefig(os.path.join(directory_output, 'seed_points.jpg'),  dpi=draw_tools.monitordpi()) 
+                        plt.savefig(os.path.join(directory_output, 'seed_points.jpg'),  dpi=600) 
                         plt.close()
     
             
@@ -1379,7 +1402,7 @@ class WaterlineEstimation:
                         plt.clf()
                         plt.imshow(regionGrown)
                         plt.title('region grow result')
-                        plt.savefig(os.path.join(directory_output, 'regionGrow_area.jpg'),  dpi=draw_tools.monitordpi()) 
+                        plt.savefig(os.path.join(directory_output, 'regionGrow_area.jpg'),  dpi=600) 
                         plt.close()                
                 
                     '''detect contours of regions and select largest boundary'''
@@ -1387,7 +1410,7 @@ class WaterlineEstimation:
                     
                     if plot_results:
                         draw_tools.plot_pts(tempText_clip_f_16bit, waterline, False, 'final contour', True) 
-                        plt.savefig(os.path.join(directory_output, 'regionGrow_contour.jpg'),  dpi=draw_tools.monitordpi())
+                        plt.savefig(os.path.join(directory_output, 'regionGrow_contour.jpg'),  dpi=600)
                         plt.close()        
                         
                     
@@ -1400,7 +1423,7 @@ class WaterlineEstimation:
                                                                             tempText_clip_f_16bit.shape[0], plot_results)
                         
                         if plot_results and plot_clust != None:
-                            plot_clust.savefig(os.path.join(directory_output, 'clustered_RG_results.jpg'),  dpi=draw_tools.monitordpi()) 
+                            plot_clust.savefig(os.path.join(directory_output, 'clustered_RG_results.jpg'),  dpi=600) 
                             plot_clust.close()
                     
                     print('performed from land side')
@@ -1436,7 +1459,7 @@ class WaterlineEstimation:
                     plt.clf()
                     plt.imshow(avgImg_clip_bilat_8U1C)
                     plt.title('bilateral filter')
-                    plt.savefig(os.path.join(directory_output, 'bilaterat_filter.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plt.savefig(os.path.join(directory_output, 'bilaterat_filter.jpg'),  dpi=600) 
                     plt.close()    
                     
                 
@@ -1449,7 +1472,7 @@ class WaterlineEstimation:
                     plt.clf()
                     plt.imshow(avgImg_canny_binary)
                     plt.title('canny filtered image')
-                    plt.savefig(os.path.join(directory_output, 'clip_canny.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plt.savefig(os.path.join(directory_output, 'clip_canny.jpg'),  dpi=600) 
                     plt.close()
         
                 
@@ -1461,7 +1484,7 @@ class WaterlineEstimation:
                                                              avgImg_clip_8U1C.shape[0], plot_results, True)
                 
                 if plot_results and plot_clust != None:
-                    plot_clust.savefig(os.path.join(directory_output, 'clustered_RG_results.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plot_clust.savefig(os.path.join(directory_output, 'clustered_RG_results.jpg'),  dpi=600) 
                     plot_clust.close()
         
         
@@ -1505,7 +1528,7 @@ class WaterlineEstimation:
                     plt.clf()
                     plt.plot(hist_water)
                     plt.title('Histogram water grey')
-                    plt.savefig(os.path.join(directory_output, 'histogram_water_grey.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plt.savefig(os.path.join(directory_output, 'histogram_water_grey.jpg'),  dpi=600) 
                     plt.close()
                 print('maximum histogram value (grey): ' + str(hist_water_maxY))
                 
@@ -1517,7 +1540,7 @@ class WaterlineEstimation:
                 if plot_results:
                     draw_tools.plot_pts(gray_clip_filt, seed_points, True, 'Seed points', True)
                     plt.title('seed points')
-                    plt.savefig(os.path.join(directory_output, 'seed_points_grey.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plt.savefig(os.path.join(directory_output, 'seed_points_grey.jpg'),  dpi=600) 
                     plt.close()
         
         
@@ -1532,7 +1555,7 @@ class WaterlineEstimation:
                     plt.clf()
                     plt.imshow(regionGrown_GS)
                     plt.title('region grow result (Grayscale)')
-                    plt.savefig(os.path.join(directory_output, 'regionGrow_area_grayscale.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plt.savefig(os.path.join(directory_output, 'regionGrow_area_grayscale.jpg'),  dpi=600) 
                     plt.close()   
         
                     
@@ -1541,7 +1564,7 @@ class WaterlineEstimation:
                 if plot_results:
                     plt.clf()
                     draw_tools.plot_pts(regionGrown_GS, waterline, False, 'Largest contour', True)
-                    plt.savefig(os.path.join(directory_output, 'largest_contours_RGgrey.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plt.savefig(os.path.join(directory_output, 'largest_contours_RGgrey.jpg'),  dpi=600) 
                     plt.close()   
                                 
                 
@@ -1550,7 +1573,7 @@ class WaterlineEstimation:
                                                              gray_clip_filt.shape[0], plot_results, True)
                 
                 if plot_results and plot_clust != None:
-                    plot_clust.savefig(os.path.join(directory_output, 'clustered_RGgrey_results.jpg'),  dpi=draw_tools.monitordpi()) 
+                    plot_clust.savefig(os.path.join(directory_output, 'clustered_RGgrey_results.jpg'),  dpi=600) 
                     plot_clust.close()
     
         
@@ -1581,7 +1604,7 @@ class WaterlineEstimation:
             
             #if plot_results:
             draw_tools.draw_points_onto_image(averageImg, waterline_final, [], 6, 10, True) 
-            plt.savefig(os.path.join(directory_output, 'waterline.jpg'),  dpi=draw_tools.monitordpi())
+            plt.savefig(os.path.join(directory_output, 'waterline.jpg'),  dpi=600)
             plt.close('all')
         
             return waterline_final_txt, convexHull, corr_hist

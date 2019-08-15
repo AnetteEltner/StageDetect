@@ -1,3 +1,26 @@
+# Copyright (c) 2018, Anette Eltner
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met: 
+# 
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer. 
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution. 
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 # encoding=utf8
 import sys, csv, os
 import pandas as pd
@@ -154,6 +177,7 @@ class image_measures:
             
     #undistort image measurements considering interior camera geometry (using AICON model)  
     def undistort_img_coos(self, img_pts, interior_orient, mm_val=False):
+    # source code from Hannes Sardemann rewritten for Python
         #img_pts: array with x and y values in pixel (if in mm state this, so can be converted prior to pixel)
         #interior_orient: list with interior orientation parameters in mm
         #output: in mm
@@ -252,6 +276,7 @@ class image_measures:
     
     #undistort image measurements considering interior camera geometry (using Agisoft PhotoScan model)  
     def undistort_img_coos_Agisoft(self, img_pts, interior_orient, mm_val=False):
+    # source code from Hannes Sardemann rewritten for Python
         #img_pts: array with x and y values in pixel (if in mm state this, so can be converted prior to pixel)
         #interior_orient: list with interior orientation parameters in mm
         #output: in mm
@@ -773,6 +798,7 @@ class conversions:
 
 
 #perform resection with adjustment to orient camera using collinearity equations
+# source code for least square adjustment from Danilo Schneider rewritten for Python
 class resection:
     
     def __init__(self):

@@ -1,4 +1,27 @@
-from wx import App, ScreenDC    #to get monitor resolution
+# Copyright (c) 2018, Anette Eltner
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met: 
+# 
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer. 
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution. 
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+#from wx import App, ScreenDC    #to get monitor resolution
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
@@ -13,12 +36,12 @@ class Drawing:
     
     '''----drawing results tools----'''
     
-    '''get montior resolution in dpi'''
-    def monitordpi(self):
-        app = App(0)
-        s = ScreenDC()
-        monitordpi = s.GetPPI()[0]
-        return monitordpi
+#    '''get montior resolution in dpi'''
+#    def monitordpi(self):
+#        app = App(0)
+#        s = ScreenDC()
+#        monitordpi = s.GetPPI()[0]
+#        return monitordpi
     
     
     '''define different colors for specific number of values'''
@@ -45,7 +68,8 @@ class Drawing:
     # image_points: array with 2 columns
     # point_id: list of point ids in same order as corresponding image_points file; if empty no points labeled
     # dpi from screen resolution
-        dpi = self.monitordpi()
+        #dpi = self.monitordpi()
+        dpi = 600
         
         set_markersize = markSize
         
@@ -123,6 +147,7 @@ class Drawing:
             plt.show()
         
     '''draw SIFT matches on images'''
+    # source code from Jan Erik Solem
     def plot_matches_SIFT(self, imagename1, imagename2, locs1, locs2, matchscores, show_below=True):
         '''Show a figure with lines joining the accepted matches
         input: im1, im2, (images as arrays), locs1, locs2 (feature locations),
@@ -143,9 +168,10 @@ class Drawing:
                     plt.plot([locs1[i][1], locs2[m][1] + cols1], [locs1[i][0], locs2[m][0]], 'c')
                 plt.axis('off')
     
-    '''draw STAR matches on images'''
+    '''draw matches on images'''
+    # source code from Jan Erik Solem
     def plot_matches(self, im1, im2, pts1, pts2, nbr_match_draw_set=0, save=False, directory_img=None):
-        '''draw STAR matches
+        '''draw matches
         im1, im2 location and name of images
         pts1, pts2 (numpy array): location of matched points in image
         nbr_match_draw: amount of matches to be displayed'''
